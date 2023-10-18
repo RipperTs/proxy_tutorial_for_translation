@@ -54,6 +54,23 @@
 最后验证一下吧! 打开绑定的域名 `xxxx.com` 可以看到谷歌翻译界面就表示成功了.
 
 
+## 使用cloudflare workers进行反向代理
+> 1. 必须将域名的dns转移到cloudflare
+> 2. 免费的用户每日免费10万次请求
+
+脚本：
+```
+const hostname = "https://translate.google.com"
+
+function handleRequest(request) {
+    let url = new URL(request.url);
+    return fetch(new Request(hostname + url.pathname,request))
+}
+
+addEventListener("fetch", event => {
+  event.respondWith(handleRequest(event.request))
+})
+```
 
 ## 使用Nginx进行配置反向代理
 
