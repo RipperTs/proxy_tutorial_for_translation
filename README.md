@@ -2,6 +2,37 @@
 
 > 注意: 前提是必须拥有自己的域名, 没有的话下面的步骤是无法进行下去的!!!
 
+## 使用二进制或Docker部署
+参考项目：[google-proxy](https://github.com/RipperTs/google-proxy)   
+
+```yml
+version: "3.8"
+
+services:
+  google-proxy:
+    image: registry.cn-hangzhou.aliyuncs.com/ripper/google-proxy:latest
+    container_name: google-proxy
+    restart: always
+
+    # 容器内服务监听 8080
+    ports:
+      - "8080:8080"
+
+    # 可选：配置上游 SOCKS5 代理，不需要时可以删掉或留空
+    # 例如：socks5://user:pass@1.2.3.4:1080
+    environment:
+      # - SOCKS5_URL=socks5://user:pass@1.2.3.4:1080
+      - TZ=Asia/Shanghai
+
+    # 将日志目录挂载到宿主机，便于持久化和查看
+    volumes:
+      - ./logs:/app/logs
+```
+
+国内服务器部署必须填写socks5代理， 否则无法访问google哦~   
+
+---
+
 🚨**温馨提示：现在联通网络可能会拦截 Vercel 部署的站点！**
 
 ## 使用 Vercel 搭建免费代理
